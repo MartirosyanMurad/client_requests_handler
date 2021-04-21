@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+
+  portainer:
+    image: portainer/portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./persistence/portainer:/data
+    ports:
+      - ${PORT_PORTAINER}:9000
+    networks:
+      - reqgen
+
+  client_request_handler:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    hostname: client_request_handler
+    restart: always
+    volumes:
+      - ./:/root/reg:ro
+      - ./persistence/client_requests:/var/log/client_requests:rw
+    networks:
+      - reqgen
+    environment:
+      - SLEEP_BEFORE_START_PROCESS_MICRO_SECOND=${SLEEP_BEFORE_START_PROCESS_MICRO_SECOND}
+      - SLEEP_AFTER_START_PROCESS_MICRO_SECOND=${SLEEP_AFTER_START_PROCESS_MICRO_SECOND}
+      - HANDLER_FILE_NAME=${HANDLER_FILE_NAME}
+      - LEAD_GENERATE_COUNT=${LEAD_GENERATE_COUNT}
+
+networks:
+  reqgen:
+    external: true

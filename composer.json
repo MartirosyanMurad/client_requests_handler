@@ -1,0 +1,35 @@
+{
+  "name": "martirosyanmurad/client_requests_handler",
+  "description": "Handles client requests",
+  "version": "1.0.0",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Murad Martirosyan",
+      "email": "martirosyanmurad@gmail.com",
+      "homepage": "http://notfound.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.4",
+    "monolog/monolog": "^2.0",
+    "php-di/php-di": "^6.0",
+    "vladimir163/lead-generator": "dev-master"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "friendsofphp/php-cs-fixer": "^2.16"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "config.php"
+    ]
+  },
+  "scripts": {
+    "cs-fixer": "./vendor/bin/php-cs-fixer fix ."
+  }
+}

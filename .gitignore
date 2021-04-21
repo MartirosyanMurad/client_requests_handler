@@ -1,0 +1,6 @@
+.idea
+/vendor
+/persistence
+*.swp
+.php_cs.cache
+.env
