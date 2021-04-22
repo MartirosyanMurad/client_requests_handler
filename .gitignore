@@ -4,3 +4,4 @@
 *.swp
 .php_cs.cache
 .env
+composer.lock
