@@ -11,7 +11,7 @@ interface Storage
     /**
      * @param string $mode
      */
-    public function open(string $mode): void;
+    public function open(string $mode = ''): void;
 
     public function close(): void;
 

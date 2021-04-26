@@ -15,16 +15,6 @@ use LeadGenerator\Lead;
  */
 class Process
 {
-    private const CATEGORY_BUT_AUTO = 'Buy auto';
-    private const CATEGORY_GET_LOAN = 'Get loan';
-    private const CATEGORY_PIZZA = 'Pizza';
-
-    private const NOT_PROCESSED_CATEGORY = [
-        self::CATEGORY_BUT_AUTO,
-        self::CATEGORY_GET_LOAN,
-        self::CATEGORY_PIZZA,
-    ];
-
     private Generator $generator;
     private Reporter $reporter;
     private Handler $handler;
@@ -55,16 +45,10 @@ class Process
     public function run(): void
     {
         while ($this->run) {
-            usleep(SLEEP_BEFORE_START_PROCESS_MICRO_SECOND);
             $start = microtime(true);
 
             $this->handler->start();
             $this->generator->generateLeads($this->leadCount, function (Lead $lead) {
-                if (in_array($lead->categoryName, self::NOT_PROCESSED_CATEGORY, true)) {
-                    $this->reporter->reportNotice("Can`t processed lead {$lead->id} for category {$lead->categoryName}");
-                    return;
-                }
-
                 $genLead = new GenLead($lead->id, $lead->categoryName);
 
                 try {

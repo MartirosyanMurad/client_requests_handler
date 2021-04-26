@@ -15,6 +15,8 @@ class FileHandler implements Handler
     private const DELIMITER = ' | ';
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
+    private const SOME_OPERATION_IMITATION_MICRO_SEC = 20000; // 0.02 sec
+
     private Storage $storage;
 
     public function __construct(Storage $storage)
@@ -24,6 +26,9 @@ class FileHandler implements Handler
 
     public function processing(Lead $lead): void
     {
+
+        usleep(self::SOME_OPERATION_IMITATION_MICRO_SEC);
+
         $this->storage->save(
             $lead->getId() . self::DELIMITER .
             $lead->getCategory() . self::DELIMITER .
