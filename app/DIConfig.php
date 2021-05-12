@@ -38,7 +38,7 @@ class DIConfig
             Storage::class => autowire(FileStorage::class)
                 ->constructorParameter('fileDir', HANDLER_FILE_NAME),
 
-            self::LEAD_GENERATOR => static function(ContainerInterface $c) {
+            self::LEAD_GENERATOR => static function (ContainerInterface $c) {
                 return new Generator();
             },
 

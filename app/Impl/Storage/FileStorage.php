@@ -10,8 +10,6 @@ use App\Storage\Storage;
  */
 class FileStorage implements Storage
 {
-    private const SAFE_WRITE_MODE = 'wb+';
-
     private string $fileDir;
 
     /** @var false|resource */
@@ -30,21 +28,8 @@ class FileStorage implements Storage
     /**
      * @inheritdoc
      */
-    public function open(string $mode = self::SAFE_WRITE_MODE): void
-    {
-        $this->storage = fopen($this->fileDir, $mode);
-    }
-
-    public function close(): void
-    {
-        fclose($this->storage);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function save(string $data): void
     {
-        fwrite($this->storage, $data);
+        file_put_contents($this->fileDir, $data, FILE_APPEND);
     }
 }

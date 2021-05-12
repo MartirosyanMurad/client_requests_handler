@@ -8,9 +8,8 @@ namespace App\Request;
  */
 interface Handler
 {
-    public function start(): void;
-
+    /**
+     * @param Lead $lead
+     */
     public function processing(Lead $lead): void;
-
-    public function stop(): void;
 }

@@ -19,7 +19,7 @@ services:
     hostname: client_request_handler
     restart: always
     volumes:
-      - ./:/root/reg:ro
+      - ./:/root/client_request:ro
       - ./persistence/client_requests:/var/log/client_requests:rw
     networks:
       - reqgen

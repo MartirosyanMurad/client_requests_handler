@@ -15,7 +15,7 @@ class FileHandler implements Handler
     private const DELIMITER = ' | ';
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
-    private const SOME_OPERATION_IMITATION_MICRO_SEC = 20000; // 0.02 sec
+    private const SOME_OPERATION_IMITATION_SEC = 2;
 
     private Storage $storage;
 
@@ -24,25 +24,17 @@ class FileHandler implements Handler
         $this->storage = $storage;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function processing(Lead $lead): void
     {
-
-        usleep(self::SOME_OPERATION_IMITATION_MICRO_SEC);
+        sleep(self::SOME_OPERATION_IMITATION_SEC);
 
         $this->storage->save(
             $lead->getId() . self::DELIMITER .
             $lead->getCategory() . self::DELIMITER .
             date(self::DATE_FORMAT) . self::DELIMITER .PHP_EOL
         );
-    }
-
-    public function start(): void
-    {
-        $this->storage->open();
-    }
-
-    public function stop(): void
-    {
-        $this->storage->close();
     }
 }

@@ -13,9 +13,11 @@
   ],
   "require": {
     "php": "^7.4",
+    "ext-pcntl": "*",
     "monolog/monolog": "^2.0",
     "php-di/php-di": "^6.0",
-    "vladimir163/lead-generator": "dev-master"
+    "vladimir163/lead-generator": "dev-master",
+    "spatie/async": "^1.5"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",

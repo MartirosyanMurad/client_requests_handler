@@ -9,6 +9,7 @@ use App\Request\Handler;
 use Exception;
 use LeadGenerator\Generator;
 use LeadGenerator\Lead;
+use Spatie\Async\Pool;
 
 /**
  * @package App
@@ -47,26 +48,32 @@ class Process
         while ($this->run) {
             $start = microtime(true);
 
-            $this->handler->start();
-            $this->generator->generateLeads($this->leadCount, function (Lead $lead) {
+            $pool = Pool::create();
+
+            $this->generator->generateLeads($this->leadCount, function (Lead $lead) use ($pool) {
                 $genLead = new GenLead($lead->id, $lead->categoryName);
 
-                try {
+                $pool->add(function () use ($genLead, $lead) {
                     $this->handler->processing($genLead);
-                    $this->reporter->reportDebug("Success processed lead {$lead->id} for category $lead->categoryName");
-                } catch (Exception $e) {
-                    $this->reporter->reportAlert(
-                        "Get exception while processed lead {$lead->id} for category $lead->categoryName\n
+                })->then(
+                    static function () use ($lead) {
+                        $dateTime = date('Y-m-d H:i:s');
+                        echo "[$dateTime]: Finish processing lead {$lead->id} for category $lead->categoryName" . PHP_EOL;
+                    }
+                )->catch(function (Exception $e) use ($lead) {
+                        $this->reporter->reportAlert(
+                            "Get exception while processed lead {$lead->id} for category $lead->categoryName\n
                         Exception: --message {$e->getMessage()} --code {$e->getCode()} --trace {$e->getTraceAsString()}"
-                    );
-                }
+                        );
+                    });
             });
-            $this->handler->stop();
+
+            $pool->wait();
 
             $processTime = microtime(true) - $start;
             $this->reporter->reportDebug("Time: $processTime");
 
-            usleep(SLEEP_AFTER_START_PROCESS_MICRO_SECOND);
+            usleep(SLEEP_AFTER_START_PROCESS_SECOND);
         }
     }
 
