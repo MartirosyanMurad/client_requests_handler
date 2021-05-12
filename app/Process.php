@@ -73,7 +73,7 @@ class Process
             $processTime = microtime(true) - $start;
             $this->reporter->reportDebug("Time: $processTime");
 
-            usleep(SLEEP_AFTER_START_PROCESS_SECOND);
+            sleep(SLEEP_AFTER_START_PROCESS_SECOND);
         }
     }
 
